@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Models;
 using Newtonsoft.Json;
 using StubServerGUI.Models;
@@ -24,6 +25,9 @@ namespace StubServerGUI
 
         [ObservableProperty]
         private string filePath = string.Empty;
+
+        [ObservableProperty]
+        private string errorMessage = string.Empty;
 
         public MonacoModel Model { get; }
 
@@ -62,6 +66,11 @@ namespace StubServerGUI
             {
                 logger.Error(ex.Message);
                 logger.Error(ex.StackTrace ?? string.Empty);
+                logger.Error(ex.GetType().FullName);
+                if (ex is not ObjectDisposedException)
+                {
+                    WeakReferenceMessenger.Default.Send(new ShowMessageBoxMessage("Error", ex.Message));
+                }
             }
             finally
             {
