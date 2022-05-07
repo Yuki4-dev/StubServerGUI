@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0-preview3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0-preview.3.22175.4" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1243-prerelease" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy &quot;$(ProjectDir)\html&quot; &quot;$(OutDir)\html&quot; /i /s /y" />
+  </Target>
+
+</Project>
