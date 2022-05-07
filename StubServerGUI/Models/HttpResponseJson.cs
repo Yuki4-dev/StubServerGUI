@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace StubServerGUI.Models
 {
     public class HttpResponseJson
     {
-        public int status { get; set; }
+        public int? status { get; set; }
 
         public string? body { get; set; }
 

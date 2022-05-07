@@ -113,6 +113,7 @@ namespace StubServerGUI.Services
             try
             {
                 httpResponse = await server.Invoke(httpRequest);
+                logger.Info($"Response -> {httpResponse}");
             }
             catch (Exception ex)
             {

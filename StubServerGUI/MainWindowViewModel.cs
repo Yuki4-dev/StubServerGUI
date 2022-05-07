@@ -1,18 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using StubServerGUI.Services;
-using StubServerGUI.Models;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Models;
 using Newtonsoft.Json;
+using StubServerGUI.Models;
+using StubServerGUI.Services;
+using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace StubServerGUI
 {
@@ -61,6 +55,7 @@ namespace StubServerGUI
             CanStart = false;
             try
             {
+                logger.Info("Server Start.");
                 await httpService.StartAsync(url, Server);
             }
             catch (Exception ex)
@@ -83,6 +78,7 @@ namespace StubServerGUI
                 return;
             }
 
+            logger.Info("Server Stop.");
             httpService.Stop();
         }
 
@@ -95,7 +91,7 @@ namespace StubServerGUI
                 {
                     fileValue = File.ReadAllText(filePath);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     logger.Error(ex.Message);
                     logger.Error(ex.StackTrace ?? string.Empty);
@@ -105,7 +101,7 @@ namespace StubServerGUI
             var script = GetJavaScript(request.ToJson(), new MetaJson() { file = fileValue });
             var javaScriptResult = await javaScriptRunner.RunAsync(script);
             logger.Info($"JavaScript Result -> {javaScriptResult ?? "null"}");
-            if(javaScriptResult == null)
+            if (javaScriptResult == null)
             {
                 return HttpResponse.Empty;
             }

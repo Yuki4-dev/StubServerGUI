@@ -1,9 +1,6 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StubServerGUI.Models
 {
@@ -32,16 +29,21 @@ namespace StubServerGUI.Models
         public override string ToString()
         {
             return $"Status : {Status} {Environment.NewLine}" +
-                   $"Header : {Headers} {Environment.NewLine}" +
-                   $"Cookie : {Cookies} {Environment.NewLine}" +
+                   $"Header : {JoinToString(Headers)} {Environment.NewLine}" +
+                   $"Cookie : {JoinToString(Cookies)} {Environment.NewLine}" +
                    $"Body : {Body} {Environment.NewLine}";
+        }
+
+        private string JoinToString(IEnumerable<HttpValuePair> httpValuePairs)
+        {
+            return string.Join(Environment.NewLine, httpValuePairs.Select(p => p.ToString()));
         }
 
         public static HttpResponse FromJson(HttpResponseJson json)
         {
-            return new HttpResponse(json.status,
-                json.body ?? String.Empty,
-                json.header?.Select(h => new HttpValuePair(h.Key,h.Value)) ?? Array.Empty<HttpValuePair>(),
+            return new HttpResponse(json.status ?? 200,
+                json.body ?? string.Empty,
+                json.header?.Select(h => new HttpValuePair(h.Key, h.Value)) ?? Array.Empty<HttpValuePair>(),
                 json.cookie?.Select(h => new HttpValuePair(h.Key, h.Value)) ?? Array.Empty<HttpValuePair>());
         }
     }

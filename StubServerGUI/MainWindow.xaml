@@ -9,7 +9,8 @@
     Title="StubServerGUI"
     Width="600"
     Height="800"
-    FontFamily="Cascadia Mono"
+    Background="#808080"
+    FontSize="18"
     FontWeight="DemiBold"
     mc:Ignorable="d">
 
@@ -19,10 +20,17 @@
 
     <Grid Margin="8">
 
+        <Grid.Resources>
+            <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
+                <Setter Property="Margin" Value="4" />
+                <Setter Property="BorderThickness" Value="0" />
+            </Style>
+        </Grid.Resources>
+
         <Grid.RowDefinitions>
+            <RowDefinition Height="80" />
             <RowDefinition Height="60" />
-            <RowDefinition Height="40" />
-            <RowDefinition Height="40" />
+            <RowDefinition Height="60" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -42,52 +50,62 @@
                 Grid.RowSpan="2"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
+
                 <TextBlock
-                    FontSize="24"
+                    FontSize="32"
                     Text="StubServerGUI"
                     TextAlignment="Left" />
 
             </StackPanel>
 
-
             <Button
                 Grid.Column="1"
-                Margin="4"
                 Command="{Binding StartServerCommand}"
-                IsEnabled="{Binding CanStart, Mode=OneWay}">
+                IsEnabled="{Binding CanStart, Mode=OneWay}"
+                Style="{StaticResource ButtonStyle}">
                 Start
             </Button>
 
             <Button
                 Grid.Row="1"
                 Grid.Column="1"
-                Margin="4"
-                Command="{Binding StopServerCommand}">
+                Command="{Binding StopServerCommand}"
+                Style="{StaticResource ButtonStyle}">
                 Stop
             </Button>
 
         </Grid>
 
         <StackPanel Grid.Row="1">
+
             <TextBlock Text="Uri" />
+
             <TextBox Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
         </StackPanel>
 
         <StackPanel Grid.Row="2">
+
             <TextBlock Text="FilePath" />
+
             <TextBox Text="{Binding FilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
         </StackPanel>
 
         <Grid Grid.Row="3">
+
             <Grid.RowDefinitions>
-                <RowDefinition Height="20" />
+                <RowDefinition Height="30" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+
             <TextBlock Text="JavaScript" />
+
             <wpf:WebView2
                 x:Name="JavaScriptWebView"
                 Grid.Row="1"
                 NavigationStarting="JavaScriptWebView_NavigationStarting" />
+
         </Grid>
 
     </Grid>

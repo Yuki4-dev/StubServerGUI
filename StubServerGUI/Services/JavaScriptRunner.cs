@@ -1,9 +1,5 @@
 ﻿using Microsoft.Web.WebView2.Wpf;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace StubServerGUI.Services
@@ -21,13 +17,12 @@ namespace StubServerGUI.Services
 
         public void SetWebView(WebView2 webView)
         {
-            logger.Info("Set WebView.");
             _WebView2 = webView ?? throw new ArgumentNullException(nameof(webView));
         }
 
         public async Task<string?> RunAsync(string javaScript)
         {
-            if(_WebView2 == null)
+            if (_WebView2 == null)
             {
                 throw new InvalidOperationException("WebView is null.");
             }

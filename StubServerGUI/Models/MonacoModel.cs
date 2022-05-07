@@ -1,28 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using System.Runtime.InteropServices;
 
 namespace Models
 {
     [ComVisible(true)]
     public class MonacoModel
     {
-        public event Action<MonacoModel>? TextChanged;
-
-        private string _Text = string.Empty;
-        public string Text
-        {
-            get => _Text;
-            set
-            {
-                if (_Text != value)
-                {
-                    _Text = value;
-                    TextChanged?.Invoke(this);
-                }
-            }
-        }
+        public string Text { get; set; } = string.Empty;
 
         public string Language { get; set; } = string.Empty;
     }
