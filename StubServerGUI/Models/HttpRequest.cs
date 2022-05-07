@@ -37,7 +37,7 @@ namespace StubServerGUI.Models
                 method = Method,
                 body = Body,
                 header = Cookies.ToDictionary(h => h.Key, h => h.Values.ToArray()),
-                cookie = Cookies.ToDictionary( c => c.Key, c => c.Values.ToArray()),
+                cookie = Cookies.ToDictionary(c => c.Key, c => c.Values.ToArray()),
                 parameter = Parameters.ToDictionary(p => p.Key, p => p.Values.ToArray()),
             };
 
@@ -47,10 +47,15 @@ namespace StubServerGUI.Models
         {
             return $"Method : {Method} {Environment.NewLine}" +
                    $"Uri : {Uri} {Environment.NewLine}" +
-                   $"Header : {Headers} {Environment.NewLine}" +
-                   $"Cookie : {Cookies} {Environment.NewLine}" +
-                   $"Parameter : {Parameters} {Environment.NewLine}" +
+                   $"Header : {JoinToString(Headers)} {Environment.NewLine}" +
+                   $"Cookie : {JoinToString(Cookies)} {Environment.NewLine}" +
+                   $"Parameter : {JoinToString(Parameters)} {Environment.NewLine}" +
                    $"Body : {Body} {Environment.NewLine}";
+        }
+
+        private string JoinToString(IEnumerable<HttpValuePair> httpValuePairs)
+        {
+            return string.Join(Environment.NewLine, httpValuePairs.Select(p => p.ToString()));
         }
     }
 }

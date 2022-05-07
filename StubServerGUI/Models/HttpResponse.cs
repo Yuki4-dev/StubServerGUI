@@ -9,6 +9,8 @@ namespace StubServerGUI.Models
 {
     public class HttpResponse
     {
+        public static HttpResponse Empty { get; } = new HttpResponse(200, "");
+
         public int Status { get; }
 
         public string Body { get; }

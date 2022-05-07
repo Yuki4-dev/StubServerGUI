@@ -22,9 +22,7 @@ namespace StubServerGUI.Models
 
         public override string ToString()
         {
-            return "{" + Environment.NewLine +
-                   string.Join(Environment.NewLine, Values.Select(value => Key + ":" + value)) + "," + Environment.NewLine +
-                   "}";
+            return string.Join(Environment.NewLine, Values.Select(value => Key + ":" + value));
         }
     }
 }

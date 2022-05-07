@@ -10,10 +10,10 @@ namespace StubServerGUI.Services
 {
     public interface IHttpService : IDisposable
     {
-        bool IsRunning { get; }
+        bool IsListening { get; }
 
-        Task StartAsync(string prefix, Func<HttpRequest, Task<HttpResponse?>> server);
+        Task StartAsync(string prefix, Func<HttpRequest, Task<HttpResponse>> server);
 
-        void Close();
+        void Stop();
     }
 }

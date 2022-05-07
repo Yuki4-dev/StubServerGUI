@@ -22,7 +22,7 @@ namespace StubServerGUI
             var sc = new ServiceCollection();
             sc.AddSingleton<MainWindowViewModel>();
             sc.AddSingleton<ILogger, ConsolLogger>();
-            sc.AddScoped<IHttpService, HttpService>();
+            sc.AddSingleton<IHttpService, HttpService>();
             sc.AddSingleton<IJavaScriptRunner, JavaScriptRunner>();
 
             Ioc.Default.ConfigureServices(sc.BuildServiceProvider());

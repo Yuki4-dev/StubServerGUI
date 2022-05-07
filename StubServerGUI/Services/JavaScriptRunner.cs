@@ -25,7 +25,7 @@ namespace StubServerGUI.Services
             _WebView2 = webView ?? throw new ArgumentNullException(nameof(webView));
         }
 
-        public async Task<string> RunAsync(string javaScript)
+        public async Task<string?> RunAsync(string javaScript)
         {
             if(_WebView2 == null)
             {

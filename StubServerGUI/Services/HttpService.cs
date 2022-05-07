@@ -11,59 +11,57 @@ namespace StubServerGUI.Services
 {
     public class HttpService : IHttpService
     {
-        private readonly object _Lock = new();
-
         private bool _IsDisposed = false;
 
         private readonly ILogger logger;
 
-        private readonly HttpListener _HttpListener = new();
+        private HttpListener? _HttpListener = null;
 
-        public bool IsRunning => _HttpListener.IsListening;
+        public bool IsListening => _HttpListener?.IsListening == true;
 
         public HttpService(ILogger logger)
         {
             this.logger = logger;
         }
 
-        public async Task StartAsync(string prefix, Func<HttpRequest, Task<HttpResponse?>> server)
+        public async Task StartAsync(string prefix, Func<HttpRequest, Task<HttpResponse>> server)
         {
             if (_IsDisposed)
             {
                 throw new ObjectDisposedException(GetType().FullName);
             }
 
-            if(IsRunning)
+            if (IsListening)
             {
                 throw new InvalidOperationException("Aleady Start.");
             }
 
             logger.Info($"Start -> {prefix}");
+            _HttpListener = new HttpListener();
             _HttpListener.Prefixes.Add(prefix);
             _HttpListener.Start();
 
             await Task.Run(async () =>
             {
-                while (_HttpListener.IsListening)
+                while (IsListening)
                 {
                     var context = await _HttpListener.GetContextAsync();
                     logger.Info($"Recieve -> {context.Request.Url}");
-
                     try
                     {
                         await Server(context, server);
                     }
                     catch (Exception ex)
                     {
-                        logger.Warn(ex.Message);
-                        logger.Warn(ex.StackTrace ?? String.Empty);
+                        logger.Error(ex.Message);
+                        logger.Error(ex.StackTrace ?? string.Empty);
                     }
                 }
             });
 
         }
 
-        private async Task Server(HttpListenerContext context, Func<HttpRequest, Task<HttpResponse?>> server)
+        private async Task Server(HttpListenerContext context, Func<HttpRequest, Task<HttpResponse>> server)
         {
             var request = context.Request;
             string requestBody = string.Empty;
@@ -109,21 +107,17 @@ namespace StubServerGUI.Services
             }
 
             var httpRequest = new HttpRequest(request.HttpMethod, request?.Url.AbsolutePath ?? string.Empty, requestBody, headers, cookies, parameters);
+            logger.Info($"Request -> {httpRequest}");
 
-            HttpResponse? httpResponse = null;
+            HttpResponse httpResponse;
             try
             {
                 httpResponse = await server.Invoke(httpRequest);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                logger.Warn(ex.Message);
-                logger.Warn(ex.StackTrace ?? string.Empty);
-            }
-
-            if(httpResponse == null)
-            {
-                logger.Info("Response is Nothing.");
+                logger.Error(ex.Message);
+                logger.Error(ex.StackTrace ?? string.Empty);
                 return;
             }
 
@@ -156,11 +150,17 @@ namespace StubServerGUI.Services
             }
         }
 
-        public void Close()
+        public void Stop()
         {
+            if (_IsDisposed || _HttpListener == null)
+            {
+                return;
+            }
+
             try
             {
                 _HttpListener.Stop();
+                _HttpListener.Close();
             }
             catch (Exception ex)
             {
@@ -169,13 +169,14 @@ namespace StubServerGUI.Services
             }
             finally
             {
-                _IsDisposed = true;
+                _HttpListener = null;
             }
         }
 
         public void Dispose()
         {
-            Close();
+            Stop();
+            _IsDisposed = true;
         }
     }
 }

@@ -12,6 +12,6 @@ namespace StubServerGUI.Services
     {
         void SetWebView(WebView2 webView);
 
-        Task<string> RunAsync(string javaScript);
+        Task<string?> RunAsync(string javaScript);
     }
 }
