@@ -26,9 +26,6 @@ namespace StubServerGUI
         [ObservableProperty]
         private string filePath = string.Empty;
 
-        [ObservableProperty]
-        private string errorMessage = string.Empty;
-
         public MonacoModel Model { get; }
 
         private readonly ILogger logger;
@@ -36,8 +33,6 @@ namespace StubServerGUI
         private readonly IHttpService httpService;
 
         private readonly IJavaScriptRunner javaScriptRunner;
-
-        public MainWindowViewModel() : this(DI.Get<ILogger>(), DI.Get<IHttpService>(), DI.Get<IJavaScriptRunner>()) { }
 
         public MainWindowViewModel(ILogger logger, IHttpService httpService, IJavaScriptRunner javaScriptRunner)
         {
@@ -60,17 +55,12 @@ namespace StubServerGUI
             try
             {
                 logger.Info("Server Start.");
-                await httpService.StartAsync(url, Server);
+                await httpService.ListenAsync(url, Server);
             }
             catch (Exception ex)
             {
-                logger.Error(ex.Message);
-                logger.Error(ex.StackTrace ?? string.Empty);
-                logger.Error(ex.GetType().FullName);
-                if (ex is not ObjectDisposedException)
-                {
-                    WeakReferenceMessenger.Default.Send(new ShowMessageBoxMessage("Error", ex.Message));
-                }
+                Error(ex);
+                WeakReferenceMessenger.Default.Send(new ShowMessageBoxMessage("Error", ex.Message));
             }
             finally
             {
@@ -102,8 +92,7 @@ namespace StubServerGUI
                 }
                 catch (Exception ex)
                 {
-                    logger.Error(ex.Message);
-                    logger.Error(ex.StackTrace ?? string.Empty);
+                    Error(ex);
                 }
             }
 
@@ -164,6 +153,14 @@ namespace StubServerGUI
                 $"var meta = {JsonConvert.SerializeObject(metaJson)};" +
                 $"return ({Model.Text}(request,meta))" +
                 "}());";
+        }
+
+        private void Error(Exception ex)
+        {
+            logger.Error(ex.Message);
+#if DEBUG
+            logger.Error(ex.StackTrace ?? string.Empty);
+#endif
         }
     }
 }

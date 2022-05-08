@@ -7,92 +7,143 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
     Title="StubServerGUI"
-    Width="600"
-    Height="800"
-    Background="#808080"
-    FontSize="18"
+    Width="1000"
+    Height="600"
+    d:DataContext="{d:DesignInstance local:MainWindowViewModel}"
+    Background="#303030"
+    Closing="Window_Closing"
+    FontSize="16"
     FontWeight="DemiBold"
+    Foreground="#F0F0F0"
     mc:Ignorable="d">
 
-    <Window.DataContext>
-        <local:MainWindowViewModel />
-    </Window.DataContext>
+    <Window.Resources>
+        <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+        <Style x:Key="TextBoxStyle" TargetType="{x:Type Control}">
+            <Setter Property="Background" Value="#202020" />
+            <Setter Property="FontWeight" Value="Regular" />
+            <Setter Property="FontFamily" Value="Cascadia Mono" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="#F0F0F0" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+    </Window.Resources>
 
-    <Grid Margin="8">
+    <Grid Margin="4">
 
-        <Grid.Resources>
-            <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
-                <Setter Property="Margin" Value="4" />
-                <Setter Property="BorderThickness" Value="0" />
-            </Style>
-        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="400" />
+            <ColumnDefinition Width="8" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="80" />
-            <RowDefinition Height="60" />
-            <RowDefinition Height="60" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
-        <Grid>
+        <Grid Margin="4,4,0,4">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
+                <RowDefinition Height="80" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="60" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="200" />
-            </Grid.ColumnDefinitions>
+            <Grid>
 
-            <StackPanel
-                Grid.RowSpan="2"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-                <TextBlock
-                    FontSize="32"
-                    Text="StubServerGUI"
-                    TextAlignment="Left" />
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="120" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel
+                    Grid.RowSpan="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+
+                    <TextBlock
+                        FontSize="24"
+                        Text="StubServerGUI"
+                        TextAlignment="Left" />
+
+                </StackPanel>
+
+                <Button
+                    Grid.Column="1"
+                    Command="{Binding StartServerCommand}"
+                    IsEnabled="{Binding CanStart, Mode=OneWay}"
+                    Style="{StaticResource ButtonStyle}">
+                    Start
+                </Button>
+
+                <Button
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Command="{Binding StopServerCommand}"
+                    Style="{StaticResource ButtonStyle}">
+                    Stop
+                </Button>
+
+            </Grid>
+
+            <StackPanel Grid.Row="1">
+
+                <TextBlock Text="Uri" />
+
+                <TextBox Style="{StaticResource TextBoxStyle}" Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             </StackPanel>
 
-            <Button
-                Grid.Column="1"
-                Command="{Binding StartServerCommand}"
-                IsEnabled="{Binding CanStart, Mode=OneWay}"
-                Style="{StaticResource ButtonStyle}">
-                Start
-            </Button>
+            <StackPanel Grid.Row="2">
 
-            <Button
-                Grid.Row="1"
-                Grid.Column="1"
-                Command="{Binding StopServerCommand}"
-                Style="{StaticResource ButtonStyle}">
-                Stop
-            </Button>
+                <TextBlock Text="FilePath" />
+
+                <TextBox Style="{StaticResource TextBoxStyle}" Text="{Binding FilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            </StackPanel>
+
+            <Grid Grid.Row="3">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Log" />
+
+                <RichTextBox
+                    x:Name="LogTextBox"
+                    Grid.Row="1"
+                    AcceptsReturn="True"
+                    BorderThickness="0"
+                    HorizontalScrollBarVisibility="Visible"
+                    IsReadOnly="True"
+                    Style="{StaticResource TextBoxStyle}"
+                    VerticalScrollBarVisibility="Visible">
+
+                    <ContextMenuService.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Click="MenuItem_Click" Header="Clear" />
+                        </ContextMenu>
+                    </ContextMenuService.ContextMenu>
+
+                </RichTextBox>
+
+            </Grid>
 
         </Grid>
 
-        <StackPanel Grid.Row="1">
+        <GridSplitter
+            Grid.Column="1"
+            HorizontalAlignment="Stretch"
+            Background="Transparent" />
 
-            <TextBlock Text="Uri" />
-
-            <TextBox Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-        </StackPanel>
-
-        <StackPanel Grid.Row="2">
-
-            <TextBlock Text="FilePath" />
-
-            <TextBox Text="{Binding FilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-        </StackPanel>
-
-        <Grid Grid.Row="3">
+        <Grid Grid.Column="2" Margin="0,4,4,4">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="30" />

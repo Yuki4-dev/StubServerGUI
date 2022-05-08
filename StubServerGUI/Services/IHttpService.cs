@@ -8,7 +8,7 @@ namespace StubServerGUI.Services
     {
         bool IsListening { get; }
 
-        Task StartAsync(string prefix, Func<HttpRequest, Task<HttpResponse>> server);
+        Task ListenAsync(string prefix, Func<HttpRequest, Task<HttpResponse>> server);
 
         void Stop();
     }

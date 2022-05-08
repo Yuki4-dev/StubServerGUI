@@ -17,7 +17,7 @@ namespace StubServerGUI
         {
             var sc = new ServiceCollection();
             sc.AddSingleton<MainWindowViewModel>();
-            sc.AddSingleton<ILogger, ConsolLogger>();
+            sc.AddSingleton<ILogger, BindableLogger>();
             sc.AddSingleton<IHttpService, HttpService>();
             sc.AddSingleton<IJavaScriptRunner, JavaScriptRunner>();
 

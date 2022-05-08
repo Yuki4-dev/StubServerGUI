@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace StubServerGUI.Models
@@ -20,7 +19,7 @@ namespace StubServerGUI.Models
 
         public override string ToString()
         {
-            return string.Join(Environment.NewLine, Values.Select(value => Key + ":" + value));
+            return string.Join(',', Values.Select(value => Key + ":" + value));
         }
     }
 }

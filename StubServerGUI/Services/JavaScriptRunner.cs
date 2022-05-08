@@ -27,7 +27,12 @@ namespace StubServerGUI.Services
                 throw new InvalidOperationException("WebView is null.");
             }
 
+#if DEBUG
             logger.Info($"Run Script -> {javaScript}");
+#else
+            logger.Info("Run Script.");
+#endif
+
             return await _WebView2.Dispatcher.Invoke(() =>
             {
                 return _WebView2.ExecuteScriptAsync(javaScript);

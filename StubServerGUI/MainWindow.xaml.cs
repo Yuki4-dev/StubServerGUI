@@ -12,12 +12,29 @@ namespace StubServerGUI
     /// </summary>
     public partial class MainWindow : Window, IRecipient<ShowMessageBoxMessage>
     {
+        private readonly ILogger logger;
+
+        private readonly IHttpService httpService;
+
+        private readonly IJavaScriptRunner javaScriptRunner;
+
         public MainWindow()
         {
+            DataContext = DI.Get<MainWindowViewModel>();
+            logger = DI.Get<ILogger>();
+            httpService = DI.Get<IHttpService>();
+            javaScriptRunner = DI.Get<IJavaScriptRunner>();
+
             InitializeComponent();
-            JavaScriptWebView.Source = new Uri(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\html\index.html", UriKind.Absolute);
-            DI.Get<IJavaScriptRunner>().SetWebView(JavaScriptWebView);
             WeakReferenceMessenger.Default.RegisterAll(this);
+
+            JavaScriptWebView.Source = new Uri(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\html\index.html", UriKind.Absolute);
+            javaScriptRunner.SetWebView(JavaScriptWebView);
+
+            if (logger is BindableLogger bindable)
+            {
+                bindable.Bind(Write);
+            }
         }
 
         public void Receive(ShowMessageBoxMessage message)
@@ -32,6 +49,25 @@ namespace StubServerGUI
                 var viewModel = (MainWindowViewModel)DataContext;
                 JavaScriptWebView.CoreWebView2.AddHostObjectToScript("model", viewModel.Model);
             }
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            LogTextBox.Document.Blocks.Clear();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            WeakReferenceMessenger.Default.UnregisterAll(this);
+            httpService.Dispose();
+        }
+
+        private void Write(string text)
+        {
+            LogTextBox.Dispatcher.InvokeAsync(() =>
+            {
+                LogTextBox.AppendText(text);
+            });
         }
     }
 
