@@ -60,8 +60,11 @@ namespace StubServerGUI
             catch (Exception ex)
             {
                 Error(ex);
-                StopServer();
                 WeakReferenceMessenger.Default.Send(new ShowMessageBoxMessage("Error", ex.Message));
+            }
+            finally
+            {
+                Stop();
             }
         }
 
@@ -74,9 +77,7 @@ namespace StubServerGUI
                 return;
             }
 
-            logger.Info("Server Stop.");
-            httpService.Stop();
-            CanStart = true;
+            Stop();
         }
 
         private async Task<HttpResponse> Server(HttpRequest request)
@@ -109,6 +110,13 @@ namespace StubServerGUI
             }
 
             return HttpResponse.FromJson(response);
+        }
+
+        private void Stop()
+        {
+            logger.Info("Server Stop.");
+            httpService.Stop();
+            CanStart = true;
         }
 
         private MonacoModel GetMonacoModel()
