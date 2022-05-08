@@ -22,7 +22,7 @@
             <Setter Property="Margin" Value="4" />
             <Setter Property="BorderThickness" Value="0" />
         </Style>
-        <Style x:Key="TextBoxStyle" TargetType="{x:Type Control}">
+        <Style x:Key="TextBoxStyle" TargetType="{x:Type TextBox}">
             <Setter Property="Background" Value="#202020" />
             <Setter Property="FontWeight" Value="Regular" />
             <Setter Property="FontFamily" Value="Cascadia Mono" />
