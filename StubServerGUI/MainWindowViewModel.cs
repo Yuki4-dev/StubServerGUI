@@ -60,11 +60,8 @@ namespace StubServerGUI
             catch (Exception ex)
             {
                 Error(ex);
+                StopServer();
                 WeakReferenceMessenger.Default.Send(new ShowMessageBoxMessage("Error", ex.Message));
-            }
-            finally
-            {
-                CanStart = true;
             }
         }
 
@@ -79,6 +76,7 @@ namespace StubServerGUI
 
             logger.Info("Server Stop.");
             httpService.Stop();
+            CanStart = true;
         }
 
         private async Task<HttpResponse> Server(HttpRequest request)
@@ -131,7 +129,7 @@ namespace StubServerGUI
                        " * \r\n" +
                        " * meta is\r\n" +
                        " * {\r\n" +
-                       $" *     file : string (Local File)\r\n" +
+                       $" *     file : string (LocalFile Value)\r\n" +
                        " * }\r\n" +
                        " * \r\n" +
                        " * return value is\r\n" +

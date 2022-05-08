@@ -26,25 +26,12 @@ namespace StubServerGUI.Models
             Cookies = cookies;
         }
 
-        public override string ToString()
-        {
-            return $"Status : {Status} {Environment.NewLine}" +
-                   $"Header : {JoinToString(Headers)} {Environment.NewLine}" +
-                   $"Cookie : {JoinToString(Cookies)} {Environment.NewLine}" +
-                   $"Body : {Body} {Environment.NewLine}";
-        }
-
-        private string JoinToString(IEnumerable<HttpValuePair> httpValuePairs)
-        {
-            return string.Join(Environment.NewLine, httpValuePairs.Select(p => p.ToString()));
-        }
-
         public static HttpResponse FromJson(HttpResponseJson json)
         {
             return new HttpResponse(json.status ?? 200,
                 json.body ?? string.Empty,
                 json.header?.Select(h => new HttpValuePair(h.Key, h.Value)) ?? Array.Empty<HttpValuePair>(),
-                json.cookie?.Select(h => new HttpValuePair(h.Key, h.Value)) ?? Array.Empty<HttpValuePair>());
+                json.cookie?.Select(c => new HttpValuePair(c.Key, c.Value)) ?? Array.Empty<HttpValuePair>());
         }
     }
 }

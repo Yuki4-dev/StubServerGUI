@@ -15,6 +15,5 @@ namespace StubServerGUI.Models
         public IDictionary<string, string[]>? cookie { get; set; }
 
         public IDictionary<string, string[]>? parameter { get; set; }
-
     }
 }
