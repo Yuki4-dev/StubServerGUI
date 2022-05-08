@@ -53,7 +53,7 @@ namespace StubServerGUI
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            LogTextBox.Document.Blocks.Clear();
+            LogTextBox.Clear();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -66,7 +66,7 @@ namespace StubServerGUI
         {
             LogTextBox.Dispatcher.InvokeAsync(() =>
             {
-                LogTextBox.AppendText(text);
+                LogTextBox.AppendText(text + "\r\n");
             });
         }
     }

@@ -116,7 +116,7 @@
 
                 <TextBlock Text="Log" />
 
-                <RichTextBox
+                <TextBox
                     x:Name="LogTextBox"
                     Grid.Row="1"
                     AcceptsReturn="True"
@@ -124,6 +124,7 @@
                     HorizontalScrollBarVisibility="Visible"
                     IsReadOnly="True"
                     Style="{StaticResource TextBoxStyle}"
+                    TextWrapping="NoWrap"
                     VerticalScrollBarVisibility="Visible">
 
                     <ContextMenuService.ContextMenu>
@@ -132,7 +133,7 @@
                         </ContextMenu>
                     </ContextMenuService.ContextMenu>
 
-                </RichTextBox>
+                </TextBox>
 
             </Grid>
 
