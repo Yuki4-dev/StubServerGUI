@@ -66,28 +66,23 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center">
 
-                    <TextBlock
-                        FontSize="24"
-                        Text="StubServerGUI"
-                        TextAlignment="Left" />
+                    <TextBlock FontSize="24" Text="StubServerGUI" />
 
                 </StackPanel>
 
                 <Button
                     Grid.Column="1"
                     Command="{Binding StartServerCommand}"
+                    Content="Start"
                     IsEnabled="{Binding CanStart, Mode=OneWay}"
-                    Style="{StaticResource ButtonStyle}">
-                    Start
-                </Button>
+                    Style="{StaticResource ButtonStyle}" />
 
                 <Button
                     Grid.Row="1"
                     Grid.Column="1"
                     Command="{Binding StopServerCommand}"
-                    Style="{StaticResource ButtonStyle}">
-                    Stop
-                </Button>
+                    Content="Stop"
+                    Style="{StaticResource ButtonStyle}" />
 
             </Grid>
 
@@ -120,7 +115,6 @@
                     x:Name="LogTextBox"
                     Grid.Row="1"
                     AcceptsReturn="True"
-                    BorderThickness="0"
                     HorizontalScrollBarVisibility="Visible"
                     IsReadOnly="True"
                     Style="{StaticResource TextBoxStyle}"
