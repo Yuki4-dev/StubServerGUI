@@ -124,31 +124,7 @@ namespace StubServerGUI
             return new MonacoModel()
             {
                 Language = "javascript",
-                Text = "/**\r\n" +
-                       " * request is\r\n" +
-                       " * {\r\n" +
-                       " *     uri : string \r\n" +
-                       " *     method : 'GET'|'POST'|'PUT'|'DELETE' \r\n" +
-                       " *     body : string \r\n" +
-                       " *     header : map<string,string[]> \r\n" +
-                       " *     cookie : map<string,string[]> \r\n" +
-                       " *     parameter : map<string,string[]> (QueryString) \r\n" +
-                       " * }\r\n" +
-                       " * \r\n" +
-                       " * meta is\r\n" +
-                       " * {\r\n" +
-                       $" *     file : string (LocalFile Value)\r\n" +
-                       " * }\r\n" +
-                       " * \r\n" +
-                       " * return value is\r\n" +
-                       " * {\r\n" +
-                       " *     status : number \r\n" +
-                       " *     body : string \r\n" +
-                       " *     header : map<string,string[]> \r\n" +
-                       " *     cookie : map<string,string[]> \r\n" +
-                       " * }\r\n" +
-                       " */\r\n" +
-                       "function server(request, meta){\r\n    return {\"status\" : 200, \"body\" : \"OK\"}\r\n}"
+                Text = $"/**\r\n * @param request {{ HttpRequest }}\r\n * @returns {{ HttpResponse }}\r\n */\r\nfunction server(request, meta) {{\r\n    return {{ \"status\": 200, \"body\": \"OK\" }}\r\n\r\n    class Meta {{\r\n        /**\r\n         * @type {{ string }}\r\n         */\r\n        file\r\n    }}\r\n\r\n    class HttpRequest {{\r\n        /**\r\n         * @type {{ string }}\r\n         */\r\n        uri\r\n        /**\r\n         * @type {{ \"GET\"|\"POST\"|\"PUT\"|\"DELETE\" }}\r\n         */\r\n        method\r\n        /**\r\n         * @type {{ string }}\r\n         */\r\n        body\r\n        /**\r\n         * @type {{ Record<string, string[]> }}\r\n         */\r\n        header\r\n        /**\r\n         * @type {{ Record<string, string[]> }}\r\n         */\r\n        cookie\r\n        /**\r\n         * @type {{ Record<string, string[]> }}\r\n         */\r\n        parameter\r\n    }}\r\n\r\n    class HttpResponse {{\r\n        /**\r\n         * @type {{ number }}\r\n         */\r\n        status\r\n        /**\r\n         * @type {{ string }}\r\n         */\r\n        body\r\n        /**\r\n         * @type {{ Record<string, string[]> }}\r\n         */\r\n        header\r\n        /**\r\n         * @type {{ Record<string, string[]> }}\r\n         */\r\n        cookie\r\n    }}\r\n}}\r\n"               
             };
         }
 

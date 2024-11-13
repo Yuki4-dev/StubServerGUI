@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 
 namespace StubServerGUI.Models
 {
@@ -34,6 +35,7 @@ namespace StubServerGUI.Models
             {
                 method = Method,
                 body = Body,
+                uri = Uri,
                 header = Headers.ToDictionary(h => h.Key, h => h.Values.ToArray()),
                 cookie = Cookies.ToDictionary(c => c.Key, c => c.Values.ToArray()),
                 parameter = Parameters.ToDictionary(p => p.Key, p => p.Values.ToArray()),
