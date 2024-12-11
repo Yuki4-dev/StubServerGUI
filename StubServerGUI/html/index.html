@@ -23,19 +23,24 @@
     <div id="container"></div>
     <script src="node_modules/monaco-editor/min/vs/loader.js"></script>
     <script>
+        const key = "stub-code";
         let editor;
         let model;
         require.config({ paths: { 'vs': 'node_modules/monaco-editor/min/vs' } });
         require(['vs/editor/editor.main'], async function () {
+
+            const text = localStorage.getItem(key);
+
             editor = monaco.editor.create(document.getElementById('container'), {
                 theme: "vs-dark",
                 fontFamily:'Cascadia Code',
                 language: await chrome.webview.hostObjects.model.Language,
-                value: await chrome.webview.hostObjects.model.Text,
+                value: text ?? await chrome.webview.hostObjects.model.Text,
             });
             model = editor.getModel();
             model.onDidChangeContent((event) => {
                 chrome.webview.hostObjects.model.Text = model.getValue();
+                localStorage.setItem(key, model.getValue())
             });
             window.addEventListener("resize", () => {
                 editor.layout();

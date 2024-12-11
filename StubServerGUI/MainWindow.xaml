@@ -145,7 +145,16 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <TextBlock Text="JavaScript" />
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="64" />
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Text="JavaScript" />
+                <Button Grid.Column="1" Content="Init" />
+            </Grid>
+            
 
             <wpf:WebView2
                 x:Name="JavaScriptWebView"
